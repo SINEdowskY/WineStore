@@ -1,0 +1,32 @@
+<header class="navbar navbar-light bg-light sticky-top">
+    <a href="/" class="navbar-brand">
+        WineStore
+    </a>
+    <ul class="nav nav-pills">
+    {% if user.is_authenticated %}
+    <li class="nav-item">
+        <a href="{% url 'cart_view' %}" class="btn btn-primary mr-2">
+            Cart 
+        </a>
+        
+    </li>  
+    <li class="nav-item">
+        <a class="btn btn-primary mr-2" href="{% url 'account' %}" role="button">
+            Account
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="btn btn-primary" href="{% url 'logout' %}" role="button">
+            Logout
+        </a>
+    </li>    
+    
+    {% else %}
+    <li class="nav-item">
+        <a class="btn btn-primary" href="{% url 'login' %}" role="button">
+            Login
+        </a>
+    </li>
+    {% endif %}
+    </ul>
+</header>

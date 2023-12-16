@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+{% load static %}
+    <div class="container-fluid">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col">
+                <img style="width: 20rem;" src="{% static 'images/bottle.png' %}" alt="">
+            </div>
+            <div class="col">
+                <h5>
+                    {{ wine_details.title }}
+                </h5>
+                <h6> {{ wine_details.price }} &euro;</h6>
+                <ul>
+                <h6>{{ wine_details.description }}</h6>
+                <h6>Made from {{ wine_details.grape_type }}</h6>
+                <h6>Well pairs with {{ wine_details.pairs_well }}</h6>
+                <h6>Comes from {{  wine_details.origin_country }}</h6>
+                <h6>Availability: 
+                {% if wine_details.storage_amount >= 40 %}
+                    high
+                {% elif wine_details.storage_amount < 40 and wine_details.storage_amount >= 10 %}
+                    medium
+                {% elif wine_details.storage_amount < 10 %}
+                    low
+                {% endif %}
+                </h6> 
+                </ul> 
+                <a class="btn btn-primary" href="/cart/{{ wine_details.id }}" role="button">
+                    Add to Cart
+                </a>
+                
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    

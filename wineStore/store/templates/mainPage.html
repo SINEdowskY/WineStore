@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="container-fluid h-80">
+        <div class="row mt-3 mb-3 d-flex align-items-center justify-content-center">
+            <h1>What type of wine do you prefer ?</h1>
+        </div>
+        <div class="row d-flex align-items-center justify-content-around">
+            <a href="/wine/red">
+                <div class="card" style="width: 18rem; height: 14rem;">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <h5>Red</h5>
+                    </div>
+                </div>
+            </a>
+            <a href="wine/white">
+                <div class="card" style="width: 18rem; height: 14rem;">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <h5>White</h5>
+                    </div>
+                </div>
+            </a>
+            <a href="/wine/rose">
+                <div class="card" style="width: 18rem; height: 14rem;">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <h5>Rose</h5>
+                    </div>
+                </div>
+            </a>
+            <a href="/wine/sparkling">
+                <div class="card" style="width: 18rem; height: 14rem;">
+                    <div class="card-body d-flex align-items-center justify-content-center">
+                        <h5>Sparkling</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+{% endblock content %}
+    

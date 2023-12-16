@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+{% load static %}
+    <div class="container-fluid">
+        <div class="row d-flex align-items-center justify-content-center">
+            <h1 class="text-capitalize">{{ wine_type }}</h1>
+        </div>
+        <div class="row flex-wrap justify-content-around align-items-left">
+           
+           {% for wine in wines %}
+            <div class="card mb-2" style="width: 20rem;">
+                <img class="card-img-top" src="{% static 'images/bottle.png' %}" alt="">
+                <div class="card-body">
+                    
+                    <h5 class="card-title">
+                        {{ wine.title }} 
+                    </h5>
+                    <h6> {{ wine.price }} &euro;</h6>
+                    <p class="card-text">
+                        {{ wine.description }}
+                    </p>
+                    <a href="/wine/detail/{{ wine.id }}" class="btn btn-primary">
+                        Check
+                    </a>
+                    <a class="btn btn-primary" href="/cart/{{ wine.id }}" role="button">
+                        Add to Cart
+                    </a>
+                </div>
+            </div>
+           {% endfor %}
+            
+        </div>
+    </div>
+    
+{% endblock content %}
+    
