@@ -2,10 +2,18 @@
 
 
 {% block content %}
-xd
+
+    
+    {% if is_to_add %}
     <form action="{% url 'add_client' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
+    {% else %}
+    <form action="{% url 'edit_client' client_id=client_id %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+    {% endif %}
+        
     
     <button type="submit" class="btn btn-primary">
         Submit

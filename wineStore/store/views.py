@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from .forms import RegistrationForm, LoginForm, ClientForm
+from .forms import RegistrationForm, LoginForm, ClientForm, OrderForm
 from .models import Client, Order, Wine, Cart
 
 # WINES
@@ -98,7 +98,24 @@ def addClientPage(request):
     else:
         context = {}
         context["form"] = ClientForm()
+        context["is_to_add"] = True
         return render(request, "addClientPage.html", context)
+
+def editClientPage(request, client_id):
+    context = {}
+    client = get_object_or_404(Client, id=client_id, account_id=request.user)
+    if request.method == "POST":
+        form = ClientForm(request.POST, instance=client)
+        if form.is_valid():
+            form.save()
+            return redirect("account")
+    else:
+        form = ClientForm(instance=client)
+        context["form"] = form
+        context["client_id"] = client.id
+        context["is_to_add"] = False
+    
+    return render(request, "addClientPage.html", context)
 
 @login_required
 def logoutView(request):
@@ -168,3 +185,11 @@ def removeCartItem(request, cart_item_id):
         return redirect('cart_view')
     else:
         return redirect("login")
+
+@login_required
+def CheckoutPage(request):
+    context = {}
+    context["form"] = OrderForm()
+    context["cart_items"] = Cart.objects.filter(account_id = request.user)
+    context["cart_value"] = sum([item.wine_id.price*item.amount for item in context["cart_items"]])
+    return render(request, "checkoutPage.html", context)

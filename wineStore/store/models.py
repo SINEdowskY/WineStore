@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 
@@ -76,7 +76,8 @@ class Client(models.Model):
     account_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.last_name
+        verbose = f"{self.first_name} {self.last_name} {self.address_street} {self.address_number}, {self.address_city}"
+        return verbose
 
 class Cart(models.Model):
     account_id = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -88,6 +89,7 @@ class Cart(models.Model):
         ]
     )
 
+
 class Order(models.Model):
     class Shipment(models.TextChoices):
         INPOST = "InPost"
@@ -97,7 +99,9 @@ class Order(models.Model):
     client_id = models.ForeignKey(Client, on_delete=models.CASCADE)
     account_id = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     order_value = models.DecimalField(decimal_places=2, max_digits=12)
-    order_set_date = models.DateField()
+    order_set_date = models.DateTimeField(default=datetime.now())
+    is_recived = models.BooleanField(default=False)
+    wines = models.ManyToManyField(Wine)
     shipment = models.CharField(
         max_length=20,
         choices=Shipment.choices,

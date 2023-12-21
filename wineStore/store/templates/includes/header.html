@@ -23,8 +23,13 @@
     
     {% else %}
     <li class="nav-item">
-        <a class="btn btn-primary" href="{% url 'login' %}" role="button">
+        <a class="btn btn-primary mr-2" href="{% url 'login' %}" role="button">
             Login
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="btn btn-primary" href="{% url 'register' %}" role="button">
+            Register
         </a>
     </li>
     {% endif %}

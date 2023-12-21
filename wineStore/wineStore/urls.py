@@ -26,11 +26,13 @@ urlpatterns = [
     path("logout/", views.logoutView, name="logout"),
     path("account/", views.accountPage, name="account"),
     path("add/client/", views.addClientPage, name="add_client"),
+    path("edit/client/<int:client_id>/", views.editClientPage, name="edit_client"),
     path("wine/<str:wine_type>/", views.winePage, name="wine_page"),
     path("wine/detail/<int:wine_id>/", views.detailWinePage),
     path("cart/<int:wine_id>/", views.addToCartView),
     path("cart/", views.CartView, name="cart_view"),
     path("cart/decrement/<int:cart_item_id>/", views.decrementCartItem, name="decrement_item"),
     path("cart/increment/<int:cart_item_id>/", views.incrementCartItem, name="increment_item"),
-    path("cart/remove/<int:cart_item_id>/", views.removeCartItem, name="remove_item")
+    path("cart/remove/<int:cart_item_id>/", views.removeCartItem, name="remove_item"),
+    path("checkout/", views.CheckoutPage, name="checkout")
 ]

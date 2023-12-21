@@ -20,7 +20,7 @@
                     <h3>{{ client.first_name }} {{client.last_name}}</h3>
                     <h4> {{ client.address_street }} {{ client.address_number}}</h4>
                     <h4> {{ client.zip_code }} {{client.address_city}} </h4>
-                    <a class="btn btn-primary" href="" role="button">
+                    <a class="btn btn-primary" href="{% url 'edit_client' client_id=client.id  %}" role="button">
                         Edit data
                     </a>
                 </div>
