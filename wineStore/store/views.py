@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .forms import RegistrationForm, LoginForm, ClientForm, OrderForm
-from .models import Client, Order, Wine, Cart
+from .models import Client, Order, Wine, Cart, WineOrder
 
 # WINES
 
@@ -66,7 +66,7 @@ def loginPage(request):
 def accountPage(request):
     context = {}
     clients = Client.objects.filter(account_id = request.user.id)
-    orders = Order.objects.filter(account_id = request.user.id)
+    orders = Order.objects.filter(account_id = request.user.id).order_by("-id")
     context["username"] = request.user.username
     context["clients"] = clients
     context["orders"] = orders
@@ -135,7 +135,6 @@ def CartView(request):
     else:
         return redirect("login")
 
-@login_required
 def addToCartView(request, wine_id):
     context = {}
     if request.user.is_authenticated:
@@ -188,8 +187,40 @@ def removeCartItem(request, cart_item_id):
 
 @login_required
 def CheckoutPage(request):
+
+    if request.method == "POST":
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            cart_wines = Cart.objects.filter(account_id = request.user)
+            cart_value = sum([item.wine_id.price*item.amount for item in cart_wines])
+            
+            order_model = Order()
+            order_model.client_id = form.cleaned_data["client_id"]
+            order_model.account_id = request.user
+            order_model.order_value = cart_value
+            order_model.shipment = form.cleaned_data["shipment"]
+            order_model.save()
+
+            for cart_wine in cart_wines:
+                cart_wine.wine_id.storage_amount -= 1
+                wine_order_model = WineOrder()
+                wine_order_model.wine = cart_wine.wine_id
+                wine_order_model.order = order_model
+                cart_wine.wine_id.save()
+                wine_order_model.save()
+            
+            cart_wines.delete()
+            return redirect("main")
+    else:
+        context = {}
+        context["form"] = OrderForm()
+        context["cart_items"] = Cart.objects.filter(account_id = request.user)
+        context["cart_value"] = sum([item.wine_id.price*item.amount for item in context["cart_items"]])
+        return render(request, "checkoutPage.html", context)
+
+@login_required
+def detailOrderPage(request, order_id):
     context = {}
-    context["form"] = OrderForm()
-    context["cart_items"] = Cart.objects.filter(account_id = request.user)
-    context["cart_value"] = sum([item.wine_id.price*item.amount for item in context["cart_items"]])
-    return render(request, "checkoutPage.html", context)
+    context["order"] = get_object_or_404(Order, id=order_id)
+    context["order_item"] = get_list_or_404(WineOrder, order=order_id)
+    return render(request, "detailOrderPage.html", context)

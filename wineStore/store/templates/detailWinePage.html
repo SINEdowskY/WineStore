@@ -28,9 +28,17 @@
                 {% endif %}
                 </h6> 
                 </ul> 
-                <a class="btn btn-primary" href="/cart/{{ wine_details.id }}" role="button">
+                
+                {% if wine_details.storage_amount > 0 %}
+                <a class="btn btn-primary" href="{% url 'add_to_cart' wine_id=wine_details.id %}" role="button">
                     Add to Cart
                 </a>
+                {% else %}
+                <a class="disabled-link btn btn-dark" href="" role="button" disabled>
+                    unavailable
+                </a>
+                {% endif %}
+                    
                 
             </div>
         </div>

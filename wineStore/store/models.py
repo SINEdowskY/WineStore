@@ -89,7 +89,6 @@ class Cart(models.Model):
         ]
     )
 
-
 class Order(models.Model):
     class Shipment(models.TextChoices):
         INPOST = "InPost"
@@ -101,9 +100,12 @@ class Order(models.Model):
     order_value = models.DecimalField(decimal_places=2, max_digits=12)
     order_set_date = models.DateTimeField(default=datetime.now())
     is_recived = models.BooleanField(default=False)
-    wines = models.ManyToManyField(Wine)
     shipment = models.CharField(
         max_length=20,
         choices=Shipment.choices,
         default=Shipment.INPOST
     )
+
+class WineOrder(models.Model):
+    wine = models.ForeignKey(Wine, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)

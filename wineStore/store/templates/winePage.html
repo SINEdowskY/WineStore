@@ -11,6 +11,8 @@
         <div class="row flex-wrap justify-content-around align-items-left">
            
            {% for wine in wines %}
+            
+            {% if wine.storage_amount > 0 %}
             <div class="card mb-2" style="width: 20rem;">
                 <img class="card-img-top" src="{% static 'images/bottle.png' %}" alt="">
                 <div class="card-body">
@@ -25,11 +27,33 @@
                     <a href="/wine/detail/{{ wine.id }}" class="btn btn-primary">
                         Check
                     </a>
-                    <a class="btn btn-primary" href="/cart/{{ wine.id }}" role="button">
+                    <a class="btn btn-primary" href="{% url 'add_to_cart' wine_id=wine.id %}" role="button">
                         Add to Cart
                     </a>
                 </div>
             </div>
+            {% else %}
+            <div class="card mb-2 text-lightgray" style="width: 20rem;">
+                <img class="card-img-top" src="{% static 'images/bottle.png' %}" alt="">
+                <div class="card-body">
+                    
+                    <h5 class="card-title">
+                        {{ wine.title }} 
+                    </h5>
+                    <h6> {{ wine.price }} &euro;</h6>
+                    <p class="card-text">
+                        {{ wine.description }}
+                    </p>
+                    <a href="/wine/detail/{{ wine.id }}" class="btn btn-primary">
+                        Check
+                    </a>
+                    <a class="btn btn-dark disabled-link" href="" role="button">
+                        unavailable
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
            {% endfor %}
             
         </div>

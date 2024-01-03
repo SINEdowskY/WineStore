@@ -33,40 +33,16 @@
         <div class="row">
             <div class="col">
                 <div class="row">
-                    <form action="" method="post">
-                        {{ form.as_p }}
+                    <form action="{% url 'checkout' %}" method="post">
+                      {% csrf_token %}  
+                      {{ form.as_p }}
+                      <button type="submit" class="btn btn-primary">
+                          Submit
+                      </button>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div id="paypal-button-container"></div>
-        </div>
-        <button type="submit" class="btn btn-primary">
-            Submit
-        </button>
 </div>
-<script>
-    paypal.Buttons({
-      createOrder: function(data, actions) {
-        // Tworzenie zamówienia
-        return actions.order.create({
-          purchase_units: [{
-            amount: {
-              value: '10.00' // Kwota płatności
-            }
-          }]
-        });
-      },
-      onApprove: function(data, actions) {
-        // Wykonaj płatność po zatwierdzeniu przez użytkownika
-        return actions.order.capture().then(function(details) {
-          // Tutaj możesz przekazać szczegóły transakcji do serwera
-          alert('Płatność zatwierdzona! ID transakcji: ' + details.id);
-        });
-      }
-    }).render('#paypal-button-container');
-  </script>
-<script src="https://www.paypal.com/sdk/js?client-id=AX7MT_wG_ETBPt-WX2huloF3SzcTwO-dJju6kTPj43grV6386LWsJyX81zBLmUxdkfVVVEnjPdRUmkiD"></script>
 {% endblock content %}
     

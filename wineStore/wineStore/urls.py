@@ -21,18 +21,23 @@ from store import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.mainPage, name="main"),
+    #ACCOUNTS
     path("login/", views.loginPage, name="login"),
     path("register/", views.registerPage, name="register"),
     path("logout/", views.logoutView, name="logout"),
     path("account/", views.accountPage, name="account"),
     path("add/client/", views.addClientPage, name="add_client"),
     path("edit/client/<int:client_id>/", views.editClientPage, name="edit_client"),
+    #WINEPAGES
     path("wine/<str:wine_type>/", views.winePage, name="wine_page"),
     path("wine/detail/<int:wine_id>/", views.detailWinePage),
-    path("cart/<int:wine_id>/", views.addToCartView),
+    #CART
+    path("cart/<int:wine_id>/", views.addToCartView, name="add_to_cart"),
     path("cart/", views.CartView, name="cart_view"),
     path("cart/decrement/<int:cart_item_id>/", views.decrementCartItem, name="decrement_item"),
     path("cart/increment/<int:cart_item_id>/", views.incrementCartItem, name="increment_item"),
     path("cart/remove/<int:cart_item_id>/", views.removeCartItem, name="remove_item"),
-    path("checkout/", views.CheckoutPage, name="checkout")
+    #ORDER
+    path("checkout/", views.CheckoutPage, name="checkout"),
+    path("order/<int:order_id>/", views.detailOrderPage, name="detail_order")
 ]

@@ -43,9 +43,12 @@
         {% for order in orders %}
             <div class="card mr-3">
                 <div class="card-body">
-                    <h3>{{ client.first_name }} {{client.last_name}}</h3>
-                    <h4> {{ client.address_street }} {{ client.address_number}}</h4>
-                    <h4> {{ client.zip_code }} {{client.address_city}} </h4>
+                    <h3>Zamówienie #{{ forloop.revcounter }}</h3>
+                    <h4>{{ order.order_value }}</h4>
+                    <h4>{{ order.shipment }}</h4>
+                    <a class="btn btn-primary" href="{% url 'detail_order' order_id=order.id %}" role="button">
+                        Check
+                    </a>
                 </div>
             </div>
         {% endfor %}
