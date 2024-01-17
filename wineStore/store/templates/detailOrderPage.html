@@ -2,15 +2,38 @@
 
 {% block content %}
 
-<div class="container-fluid">
-    <div class="column">
-        <h1>Zamówienie</h1>
-        
-            
+<div class="container py-5">
+    <div class="text-center mb-4">
+        <h1 class="display-4">Order Details</h1>
+        <p class="lead">Order Number: {{ order.id }}</p>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h3 class="card-title">Delivery Method: {{ order.shipment }}</h3>
+            <p class="card-text">Order Date: {{ order.order_set_date }}</p>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">
+            <h3 class="mb-0">Items:</h3>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for item in order_item %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ item.wine.title }}
+                <span>x {{ item.amount }} | {% widthratio item.amount 1 item.wine.price %} &euro;</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Total Value: {{ order.order_value }} &euro;</h3>
+        </div>
     </div>
 </div>
 
-    
-
 {% endblock content %}
-    

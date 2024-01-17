@@ -1,63 +1,82 @@
 {% extends 'base.html' %}
 
-
-
 {% block content %}
 {% load static %}
-    <div class="container-fluid">
-        <div class="row d-flex align-items-center justify-content-center">
-            <h1 class="text-capitalize">{{ wine_type }}</h1>
-        </div>
-        <div class="row flex-wrap justify-content-around align-items-left">
-           
-           {% for wine in wines %}
-            
-            {% if wine.storage_amount > 0 %}
-            <div class="card mb-2" style="width: 20rem;">
-                <img class="card-img-top" src="{% static 'images/bottle.png' %}" alt="">
-                <div class="card-body">
-                    
-                    <h5 class="card-title">
-                        {{ wine.title }} 
-                    </h5>
-                    <h6> {{ wine.price }} &euro;</h6>
-                    <p class="card-text">
-                        {{ wine.description }}
-                    </p>
-                    <a href="/wine/detail/{{ wine.id }}" class="btn btn-primary">
-                        Check
-                    </a>
-                    <a class="btn btn-primary" href="{% url 'add_to_cart' wine_id=wine.id %}" role="button">
-                        Add to Cart
-                    </a>
-                </div>
-            </div>
-            {% else %}
-            <div class="card mb-2 text-lightgray" style="width: 20rem;">
-                <img class="card-img-top" src="{% static 'images/bottle.png' %}" alt="">
-                <div class="card-body">
-                    
-                    <h5 class="card-title">
-                        {{ wine.title }} 
-                    </h5>
-                    <h6> {{ wine.price }} &euro;</h6>
-                    <p class="card-text">
-                        {{ wine.description }}
-                    </p>
-                    <a href="/wine/detail/{{ wine.id }}" class="btn btn-primary">
-                        Check
-                    </a>
-                    <a class="btn btn-dark disabled-link" href="" role="button">
-                        unavailable
-                    </a>
-                </div>
-            </div>
-            {% endif %}
+<style>
+    .container-fluid {
+        padding: 20px;
+    }
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        border-radius: 5px;
+        margin: 20px;
+    }
+    .card:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+    .card img {
+        border-radius: 5px 5px 0 0;
+        max-width: 100%;
+    }
+    .card-body {
+        padding: 2px 16px;
+    }
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .col {
+        flex: 0 0 auto;
+        width: 25%;
+        padding: 10px;
+    }
+    @media screen and (max-width: 1100px) {
+        .col {
+            width: 50%;
+        }
+    }
+    @media screen and (max-width: 800px) {
+        .col {
+            width: 100%;
+        }
+    }
+    .btn {
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 15px; /* Dodano margines dolny dla przycisków */
+    }
+</style>
 
-           {% endfor %}
-            
-        </div>
+<div class="container-fluid">
+    <h1 class="display-3 text-uppercase text-center my-4">{{ wine_type }} Wine</h1>
+    <div class="row">
+       {% for wine in wines %}
+       <div class="col">
+           <div class="card{% if not wine.storage_amount %} text-muted{% endif %}">
+               <img class="card-img-top" src="{% static 'images/bottle.png' %}" alt="{{ wine.title }} bottle">
+               <div class="card-body">
+                   <h5 class="card-title">{{ wine.title }}</h5>
+                   <h6>{{ wine.price }} &euro;</h6>
+                   <p class="card-text">{{ wine.description }}</p>
+                   <div>
+                       <a href="/wine/detail/{{ wine.id }}" class="btn btn-outline-dark">Check</a>
+                       {% if wine.storage_amount %}
+                       <a class="btn btn-primary" href="{% url 'add_to_cart' wine_id=wine.id %}" role="button">
+                           Add to Cart
+                       </a>
+                       {% else %}
+                       <button class="btn btn-dark disabled" disabled>
+                           Unavailable
+                       </button>
+                       {% endif %}
+                   </div>
+               </div>
+           </div>
+       </div>
+       {% endfor %}
     </div>
-    
+</div>
+
 {% endblock content %}
-    

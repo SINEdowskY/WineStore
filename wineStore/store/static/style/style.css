@@ -1,3 +1,30 @@
+body {
+    font-family: 'Habibi', serif;
+}
 .cardItem{
     flex-basis: 33%
+}
+
+.red {
+    background-color: #840012;
+    border-color: #840012;
+}
+
+/* Custom secondary color */
+.rose {
+    background-color: #E48693;
+    border-color: #E48693;
+}
+
+/* Custom success color */
+.white {
+    background-color: #26AB72;
+    border-color: #26AB72;
+    color: #fff;
+}
+
+.sparkling {
+    background-color: #F8B10C;
+    border-color: #F8B10C;
+    color: #fff;
 }

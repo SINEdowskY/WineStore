@@ -3,18 +3,18 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from .models import Client, Order
 from django_recaptcha.fields import ReCaptchaField
-from django_recaptcha.widgets import ReCaptchaV2Checkbox
+from django_recaptcha.widgets import ReCaptchaV2Checkbox, ReCaptchaV3
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField()
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
     class Meta:
         model = User
         fields = ["username", "email", "password1", "password2"]
 
 
 class LoginForm(AuthenticationForm):
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
     class Meta:
         model = User
         fields = ["username", "password"]
@@ -34,7 +34,8 @@ class ClientForm(forms.ModelForm):
             "phone_number"
         ]
         widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date'})
+            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'required':'required'})
+            
         }
 
 class OrderForm(forms.ModelForm):

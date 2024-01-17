@@ -1,47 +1,64 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
 {% load static %}
-    <div class="container-fluid">
-        <div class="row d-flex align-items-center justify-content-center">
-            <div class="col">
-                <img style="width: 20rem;" src="{% static 'images/bottle.png' %}" alt="">
-            </div>
-            <div class="col">
-                <h5>
-                    {{ wine_details.title }}
-                </h5>
-                <h6> {{ wine_details.price }} &euro;</h6>
-                <ul>
-                <h6>{{ wine_details.description }}</h6>
-                <h6>Made from {{ wine_details.grape_type }}</h6>
-                <h6>Well pairs with {{ wine_details.pairs_well }}</h6>
-                <h6>Comes from {{  wine_details.origin_country }}</h6>
-                <h6>Availability: 
-                {% if wine_details.storage_amount >= 40 %}
-                    high
-                {% elif wine_details.storage_amount < 40 and wine_details.storage_amount >= 10 %}
-                    medium
-                {% elif wine_details.storage_amount < 10 %}
-                    low
-                {% endif %}
-                </h6> 
-                </ul> 
-                
-                {% if wine_details.storage_amount > 0 %}
-                <a class="btn btn-primary" href="{% url 'add_to_cart' wine_id=wine_details.id %}" role="button">
-                    Add to Cart
-                </a>
-                {% else %}
-                <a class="disabled-link btn btn-dark" href="" role="button" disabled>
-                    unavailable
-                </a>
-                {% endif %}
-                    
-                
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">{{ wine_details.title }}</h2>
+                    <div class="row">
+                        <div class="col-md-6 mb-4 mb-md-0">
+                            <img src="{% static 'images/bottle.png' %}" alt="{{ wine_details.title }}" class="img-fluid">
+                        </div>
+                        <div class="col-md-6">
+                            <h3 class="text-primary">Price: {{ wine_details.price }} &euro;</h3>
+                            <p class="text-muted">{{ wine_details.description }}</p>
+                            <dl class="row">
+                                
+                                <dt class="col-sm-5">Percentage:</dt>
+                                <dd class="col-sm-7">{{ wine_details.alcohol_percentage }} &percnt;</dd>
+                                
+                                <dt class="col-sm-5">Year:</dt>
+                                <dd class="col-sm-7">{{ wine_details.wine_year }}</dd>
+                                
+                                <dt class="col-sm-5">Made from:</dt>
+                                <dd class="col-sm-7">{{ wine_details.grape_type }}</dd>
+                                
+                                <dt class="col-sm-5">Pairs well with:</dt>
+                                <dd class="col-sm-7">{{ wine_details.pairs_well }}</dd>
+                                
+                                <dt class="col-sm-5">Origin:</dt>
+                                <dd class="col-sm-7">{{ wine_details.origin_country }}</dd>
+                                
+                                <dt class="col-sm-5">Availability:</dt>
+                                <dd class="col-sm-7">
+                                    {% if wine_details.storage_amount >= 40 %}
+                                        <span class="badge bg-success text-light">High</span>
+                                    {% elif wine_details.storage_amount < 40 and wine_details.storage_amount >= 10 %}
+                                        <span class="badge bg-warning text-light">Medium</span>
+                                    {% elif wine_details.storage_amount < 10 and wine_details.storage_amount >= 1 %}
+                                        <span class="badge bg-danger text-light">Low</span>
+                                    {% elif wine_details.storage_amount <= 0 %}
+                                        <span class="badge bg-dark text-light">None</span>
+                                    {% endif %}
+                                </dd>
+                            </dl>
+                            {% if wine_details.storage_amount > 0 %}
+                            <div class="mt-4">
+                                <a href="{% url 'add_to_cart' wine_id=wine_details.id %}" class="btn btn-primary btn-lg">Add to Cart</a>
+                            </div>
+                            {% else %}
+                            <div class="mt-4">
+                                <button class="btn btn-secondary btn-lg disabled">Unavailable</button>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock content %}
-    

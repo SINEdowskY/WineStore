@@ -47,6 +47,8 @@ class Wine(models.Model):
     )
     origin_country = models.CharField(max_length=20, default="France")
     storage_amount = models.IntegerField()
+    alcohol_percentage = models.IntegerField(default=12)
+    wine_year = models.IntegerField(default=2001)
 
     def __str__(self):
         return self.title
@@ -109,3 +111,6 @@ class Order(models.Model):
 class WineOrder(models.Model):
     wine = models.ForeignKey(Wine, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    amount = models.IntegerField(default=1, validators=[
+            MinValueValidator(limit_value=1)
+        ])

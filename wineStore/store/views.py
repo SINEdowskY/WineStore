@@ -1,17 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .forms import RegistrationForm, LoginForm, ClientForm, OrderForm
 from .models import Client, Order, Wine, Cart, WineOrder
 
-# WINES
 
+# WINES
 def mainPage(request):
     context = {}
     return render(request, "mainPage.html", context)
-
 
 def winePage(request, wine_type):
     context = {}
@@ -34,7 +34,11 @@ def registerPage(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, "Registered !")
             return redirect("login")
+        else:
+            messages.error(request, form.errors)
+            return render(request, "registerPage.html", context)
 
     return render(request, "registerPage.html", context)
 
@@ -49,12 +53,13 @@ def loginPage(request):
             if user is not None:
                 login(request, user)
                 print(f"Użytkownik {username} zalogował się")
+                messages.success(request, "Logged in !")
                 return redirect('main')
             else:
-                messages.error(request, "Błędne dane logowania !")
+                messages.error(request, form.errors)
                 return redirect('login')
         else:
-            messages.error(request, "Błędne dane logowania !")
+            messages.error(request, form.errors)
             return redirect('login')
     else:
         context = {}
@@ -101,6 +106,7 @@ def addClientPage(request):
         context["is_to_add"] = True
         return render(request, "addClientPage.html", context)
 
+@login_required
 def editClientPage(request, client_id):
     context = {}
     client = get_object_or_404(Client, id=client_id, account_id=request.user)
@@ -147,7 +153,7 @@ def addToCartView(request, wine_id):
             cart_item.save()
         else:
             print(f"Użytkownik {request.user.username} dodal do koszyka")
-
+        messages.success(request, f"Wine {Wine.objects.get(id=wine_id).title} has been added to cart.")
         return redirect("main")
     else:
         return redirect("login")
@@ -206,6 +212,7 @@ def CheckoutPage(request):
                 wine_order_model = WineOrder()
                 wine_order_model.wine = cart_wine.wine_id
                 wine_order_model.order = order_model
+                wine_order_model.amount = cart_wine.amount
                 cart_wine.wine_id.save()
                 wine_order_model.save()
             

@@ -1,50 +1,39 @@
 {% extends 'base.html' %}
 
-
-
 {% block content %}
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <h1>Cart</h1>
-    </div>
-    <div class="row">
-        <div class="col">           
-            {% if cart_items %}
-            {% for item in cart_items %}
-            <div class="row d-flex justify-content-center">
-                <div class="col">
-                    <h5>{{ item.wine_id.title }} x {{item.amount}}</h5>
-                    <a class="btn btn-primary" href="{% url 'increment_item' cart_item_id=item.id %}" role="button">+</a>
-                    <a class="btn btn-primary" href="{% url 'decrement_item' cart_item_id=item.id %}" role="button">-</a>
-                </div>
-                <div class="col">
-                    <p>{% widthratio item.amount 1 item.wine_id.price %} &euro;</p>
-                </div>
-                <div class="col">
-                    <a class="btn btn-primary" href="{% url 'remove_item'  cart_item_id=item.id %}" role="button">X</a>
-                </div>
-            </div>
-            {% endfor %}
-    
-            <div class="row d-flex">
-                <div class="col">
-                    
-                    {{ cart_value }}
-                        
-                </div>
-                <div class="col">
-                    <a class="btn btn-primary" href="{% url 'checkout' %}" role="button">
-                        Checkout
+<div class="container my-5">
+    <h1 class="text-center mb-4">Shopping Cart</h1>
+    {% if cart_items %}
+        {% for item in cart_items %}
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ item.wine_id.title }}</h5>
+                <p class="card-text">{{ item.wine_id.description }}</p>
+                <div class="d-flex align-items-center">
+                    <a class="btn btn-outline-secondary btn-sm" href="{% url 'decrement_item' cart_item_id=item.id %}">
+                        <i class="fas fa-minus"></i>
+                    </a>
+                    <span class="mx-3">{{ item.amount }}</span>
+                    <a class="btn btn-outline-secondary btn-sm" href="{% url 'increment_item' cart_item_id=item.id %}">
+                        <i class="fas fa-plus"></i>
                     </a>
                 </div>
-            </div>
-            {% else %}
-            Koszyk jest pusty !                
-            {% endif %}
-                
+                <p class="mt-3">{{ item.amount }} x {{ item.wine_id.price }} &euro;</p>
+                <a class="btn btn-outline-danger" href="{% url 'remove_item'  cart_item_id=item.id %}">Remove</a>
         </div>
     </div>
+    {% endfor %}
+    <div class="card mt-4 mb-3 shadow">
+        <div class="card-body">
+            <h5 class="card-title">Total: {{ cart_value }} &euro;</h5>
+            <a class="btn btn-success btn-lg btn-block" href="{% url 'checkout' %}">Proceed to Checkout</a>
+        </div>
+    </div>
+{% else %}
+    <div class="text-center">
+        <p>Your cart is empty.</p>
+        <a class="btn btn-primary" href="{% url 'main' %}">Start Shopping</a>
+    </div>
+{% endif %}
 </div>
-        
 {% endblock content %}
-    

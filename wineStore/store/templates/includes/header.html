@@ -1,37 +1,42 @@
-<header class="navbar navbar-light bg-light sticky-top">
+<header class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
     <a href="/" class="navbar-brand">
-        WineStore
+        <i class="fas fa-wine-bottle"></i> WineStore
     </a>
-    <ul class="nav nav-pills">
-    {% if user.is_authenticated %}
-    <li class="nav-item">
-        <a href="{% url 'cart_view' %}" class="btn btn-primary mr-2">
-            Cart 
-        </a>
-        
-    </li>  
-    <li class="nav-item">
-        <a class="btn btn-primary mr-2" href="{% url 'account' %}" role="button">
-            Account
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="btn btn-primary" href="{% url 'logout' %}" role="button">
-            Logout
-        </a>
-    </li>    
-    
-    {% else %}
-    <li class="nav-item">
-        <a class="btn btn-primary mr-2" href="{% url 'login' %}" role="button">
-            Login
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="btn btn-primary" href="{% url 'register' %}" role="button">
-            Register
-        </a>
-    </li>
-    {% endif %}
-    </ul>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a href="{% url 'cart_view' %}" class="nav-link">
+                    <i class="fas fa-shopping-cart"></i> Cart 
+                    {% if cart_count %}
+                    ({{ cart_count }})
+                    {% endif %}
+                </a>
+            </li>  
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user"></i> Account
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'account' %}"><i class="fas fa-user-circle"></i> Profile</a>
+                    <a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'register' %}">
+                    <i class="fas fa-user-plus"></i> Register
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
 </header>
